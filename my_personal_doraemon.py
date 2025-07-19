@@ -14,9 +14,9 @@ st.markdown(f'''
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
     .stApp {{
-        background-image: url("https://image.shutterstock.com/image-vector/seamless-pattern-cute-rabbit-heart-star-2078306815.jpg");
+        background-image: url('cute.png');
         background-repeat: repeat;
-        background-size: auto;
+        background-size: cover;
         background-attachment: fixed;
         background-position: center;
         background-color: #ffeef3; /* soft pastel fallback */
