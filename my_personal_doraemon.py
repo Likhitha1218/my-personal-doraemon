@@ -1,3 +1,4 @@
+
 import streamlit as st
 import datetime
 import random
@@ -128,6 +129,8 @@ if st.button("✅ I completed today's goals!"):
 
 else:
     st.info(f"Your current streak: {st.session_state['streak']} days. Keep it up!")
+
+
 
 
 
