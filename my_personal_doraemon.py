@@ -10,7 +10,8 @@ st.markdown('''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/abhishekkrthakur/ImagesForProjects/main/pastel_doodle.png");
+        background-image: url("https://images.unsplash.com/photo-1607082349565-59e79b74745f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80");
+
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
