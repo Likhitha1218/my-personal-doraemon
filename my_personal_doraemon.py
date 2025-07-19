@@ -14,7 +14,7 @@ st.markdown(f'''
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
     .stApp {{
-        background-image: url("https://www.vecteezy.com/vector-art/14241092-seamless-pattern-rabbit-hand-drawn-bunny-and-heart-design-rabbit-background-vector");
+        background-image: url("https://static.vecteezy.com/system/resources/previews/023401676/seamless-pattern-with-cute-bunnies-and-hearts.jpg");
         background-repeat: repeat;
         background-size: auto;
         background-attachment: fixed;
