@@ -1,53 +1,61 @@
 import streamlit as st
 import datetime
 import random
+import base64
 
 # Page Configuration
 st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
+with open("/mnt/data/799efeed-09ea-468e-b42e-9f1bf1784a66.png", "rb") as img_file:
+    b64 = base64.b64encode(img_file.read()).decode()
+
+img_uri = f"data:image/png;base64,{b64}"
+
 # Pastel background, Fredoka One font, clear text color
-st.markdown('''
+st.markdown(f'''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-    .stApp {
-        background-image: url("https://thumbs.dreamstime.com/b/seamless-pattern-cute-animals-pink-pastel-backgorund-cute-word-276972393.jpg");
+    .stApp {{
+        background-image: url("{img_uri}");
         background-repeat: repeat;
         background-size: auto;
         background-attachment: fixed;
         background-position: center;
-        background-color: #fff0f5; /* fallback: soft pink */
-        color: #222;
+        background-color: #ffeef3; /* soft pastel fallback */
         font-family: 'Fredoka One', cursive;
-    }
+        color: #222;
+    }}
 
-    h1, h2, h3, h4, h5, h6, p, div, span, input, button {
+    h1, h2, h3, h4, h5, h6, p, div, span, input, button {{
         color: #222 !important;
         font-family: 'Fredoka One', cursive;
-    }
+    }}
 
-    .block {
+    .block {{
         background-color: #FFFFFFDD;
         padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         margin-bottom: 20px;
-    }
+    }}
 
-    .stTextInput>div>div>input {
+    .stTextInput>div>div>input {{
         background-color: #FFEFEF;
         color: #222;
-    }
+    }}
 
-    .stButton>button {
+    .stButton>button {{
         background-color: #FFD6E8;
         color: #222;
         font-weight: bold;
         border-radius: 8px;
         padding: 0.5em 1em;
-    }
+    }}
     </style>
 ''', unsafe_allow_html=True)
+
+
 
 # App Title
 st.markdown("<h1 style='text-align: center;'>My Personal Doraemon 🩵</h1>", unsafe_allow_html=True)
