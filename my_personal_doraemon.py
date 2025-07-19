@@ -10,7 +10,7 @@ st.markdown('''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
     .stApp {
-        background-image: url("https://www.transparenttextures.com/patterns/cream-dust.png");
+        background-image: url("https://www.transparenttextures.com/patterns/polka-dot.png");
 
         background-size: cover;
         background-repeat: no-repeat;
