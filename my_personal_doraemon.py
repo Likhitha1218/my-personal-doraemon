@@ -9,21 +9,23 @@ st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="
 st.markdown('''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
     .stApp {
-        background: linear-gradient(to bottom, #fffafcaa, #ffeef5aa), url("https://i.imgur.com/Su2xX7B.png");
-
-
-        background-size: cover;
-        background-repeat: no-repeat;
+        background-image: url("https://thumbs.dreamstime.com/b/seamless-pattern-cute-animals-pink-pastel-backgorund-cute-word-276972393.jpg");
+        background-repeat: repeat;
+        background-size: auto;
         background-attachment: fixed;
         background-position: center;
+        background-color: #fff0f5; /* fallback: soft pink */
         color: #222;
         font-family: 'Fredoka One', cursive;
     }
+
     h1, h2, h3, h4, h5, h6, p, div, span, input, button {
         color: #222 !important;
         font-family: 'Fredoka One', cursive;
     }
+
     .block {
         background-color: #FFFFFFDD;
         padding: 15px;
@@ -31,10 +33,12 @@ st.markdown('''
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         margin-bottom: 20px;
     }
+
     .stTextInput>div>div>input {
         background-color: #FFEFEF;
         color: #222;
     }
+
     .stButton>button {
         background-color: #FFD6E8;
         color: #222;
