@@ -10,7 +10,8 @@ st.markdown('''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
     .stApp {
-        background-image: url("https://i.imgur.com/Su2xX7B.png");
+        background: linear-gradient(to bottom, #fffafcaa, #ffeef5aa), url("https://i.imgur.com/Su2xX7B.png");
+
 
         background-size: cover;
         background-repeat: no-repeat;
