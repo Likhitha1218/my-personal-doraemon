@@ -10,7 +10,11 @@ st.markdown('''
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
     .stApp {
-        background-color: #FFF7F0;
+        background-image: url("https://raw.githubusercontent.com/abhishekkrthakur/ImagesForProjects/main/pastel_doodle.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
         color: #222;
         font-family: 'Fredoka One', cursive;
     }
@@ -48,12 +52,6 @@ date_str = today.strftime("%d %B %Y")
 day_str = today.strftime("%A")
 st.markdown(f"<h3 style='text-align:center;'>{date_str} | {day_str}</h3>", unsafe_allow_html=True)
 
-# Stable aesthetic doodle image
-st.markdown("<div class='block'>", unsafe_allow_html=True)
-doodle_url = "https://raw.githubusercontent.com/abhishekkrthakur/ImagesForProjects/main/pastel_doodle.png"
-st.image(doodle_url, caption="✨ Today's Pastel Doodle", use_container_width=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
 # Streak Tracker
 if 'streak' not in st.session_state:
     st.session_state['streak'] = 0
@@ -85,10 +83,16 @@ new_task = st.text_input("Add a new task:")
 if st.button("Add Task") and new_task.strip() != "":
     st.session_state['tasks'].append(new_task.strip())
 
+tasks_to_remove = []
 for i, task in enumerate(st.session_state['tasks']):
     if st.checkbox(task, key=f"task_{i}"):
+        tasks_to_remove.append(i)
+
+if tasks_to_remove:
+    for i in sorted(tasks_to_remove, reverse=True):
         st.session_state['tasks'].pop(i)
-        st.experimental_rerun()
+    st.experimental_rerun()
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Daily Quote
