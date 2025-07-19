@@ -2,121 +2,140 @@ import streamlit as st
 import datetime
 import random
 
+# Page settings
 st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
-# Animated pastel background
-st.markdown("""
-<style>
-body {
-    background: linear-gradient(270deg, #fbeffb, #f0faff, #fefbf1);
-    background-size: 600% 600%;
-    animation: gradientBG 30s ease infinite;
-    font-family: "Comic Sans MS", cursive, sans-serif;
-}
-@keyframes gradientBG {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-}
-</style>
-""", unsafe_allow_html=True)
+# Pastel background styling using containers
+st.markdown(
+    """
+    <style>
+    .block-container {
+        padding: 2rem;
+        background-color: #fef6fb;
+        border-radius: 20px;
+    }
+    h1, h2, h3 {
+        font-family: Comic Sans MS, cursive;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-# Stable cartoon images
-DORAEMON_URL = "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/doraemon.png"
-NOBITA_URL = "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/nobita.png"
-SHIZUKA_URL = "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/shizuka.png"
+# Cartoon Images (stable Imgur links)
+DORAEMON_URL = "https://i.imgur.com/bNxNqOd.png"
+NOBITA_URL = "https://i.imgur.com/pKZtF7y.png"
+SHIZUKA_URL = "https://i.imgur.com/1S5kAYt.png"
 CARTOON_URLS = [
-    "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/cartoon1.png",
-    "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/cartoon2.png",
-    "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/cartoon3.png",
-    "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/cartoon4.png",
-    "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/cartoon5.png"
+    "https://i.imgur.com/bNxNqOd.png",
+    "https://i.imgur.com/pKZtF7y.png",
+    "https://i.imgur.com/1S5kAYt.png",
+    "https://i.imgur.com/FWZJtzu.png",
+    "https://i.imgur.com/Opm9U8J.png"
 ]
 
 # Header with Doraemon
 col1, col2 = st.columns([1, 8])
 with col1:
-    st.image(DORAEMON_URL, width=70, use_container_width=True)
+    st.image(DORAEMON_URL, width=80, use_container_width=False)
 with col2:
-    st.markdown("<h1 style='font-family:Comic Sans MS;color:#2b2b2b;'>My Personal Doraemon</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>My Personal Doraemon</h1>", unsafe_allow_html=True)
 
-# Date and day with Nobita and Shizuka
+# Date and Day with Nobita and Shizuka
 today = datetime.datetime.now()
 date_str = today.strftime("%d %B %Y")
 day_str = today.strftime("%A")
+
 col3, col4, col5, col6 = st.columns([1, 3, 1, 3])
 with col3:
-    st.image(NOBITA_URL, width=50, use_container_width=True)
+    st.image(NOBITA_URL, width=50, use_container_width=False)
 with col4:
     st.markdown(f"### {date_str}")
 with col5:
-    st.image(SHIZUKA_URL, width=50, use_container_width=True)
+    st.image(SHIZUKA_URL, width=50, use_container_width=False)
 with col6:
     st.markdown(f"### {day_str}")
 
-# Daily cartoon doodle
+# Daily Cartoon Doodle
 today_index = today.timetuple().tm_yday % len(CARTOON_URLS)
 st.image(CARTOON_URLS[today_index], caption="Today's Cartoon Doodle", use_container_width=True)
 
-# Advanced Prompt Box for all human needs
+# Doraemon Prompt Box with suggestions
 st.markdown("## 💬 Doraemon Prompt Box")
-user_input = st.text_input("Tell Doraemon how you feel or what you need today:")
+with st.form(key="prompt_form"):
+    user_input = st.text_input("Tell Doraemon how you feel or what you need today:")
+    submit = st.form_submit_button("Get Suggestion")
 
-if user_input:
-    response = ""
+if submit and user_input:
     lower_input = user_input.lower()
-    if "sad" in lower_input or "depressed" in lower_input:
-        response = "I'm here for you 🤗. Try listening to your favorite song or doodling something simple. Want to dance a bit?"
-    elif "tired" in lower_input or "exhausted" in lower_input:
-        response = "You might need some rest 🛌. Stretch for 2 minutes, drink water, and take a small break."
+    response = "✨ Doraemon says: "
+
+    if any(word in lower_input for word in ["sad", "depressed", "upset", "cry"]):
+        response += "I'm here for you 🤗. Try a light doodle, listen to your favorite song, or take a small walk."
+    elif any(word in lower_input for word in ["tired", "exhausted", "sleepy"]):
+        response += "You deserve rest 😴. Take a deep breath, stretch, or have a glass of water."
     elif "happy" in lower_input:
-        response = "Yay! 😃 Celebrate by dancing, singing, or sketching a happy doodle today!"
+        response += "Yay! 😃 Celebrate your happiness by dancing or drawing something joyful."
     elif "bored" in lower_input:
-        response = "Try a fun activity: dance, draw Doraemon, or organize your study desk with music on 🎶."
-    elif "anxious" in lower_input or "nervous" in lower_input:
-        response = "Take deep breaths 🧘‍♀️. Stretch your shoulders and journal your thoughts for clarity."
-    elif "stomach" in lower_input or "headache" in lower_input or "pain" in lower_input:
-        response = "Try drinking warm water and resting. If pain persists, please consult a doctor 🩺."
-    elif "focus" in lower_input or "lazy" in lower_input:
-        response = "Set a 15-min timer and start with a small task ⏱️. Reward yourself with a doodle or dance after!"
+        response += "Try dancing, singing, or doodling something fun 🎨 to refresh your mind."
+    elif any(word in lower_input for word in ["anxious", "nervous", "worried"]):
+        response += "Take slow breaths 🧘‍♀️. You can also try journaling your thoughts."
+    elif any(word in lower_input for word in ["pain", "stomach", "headache"]):
+        response += "Drink warm water, rest, and if it persists, please consult a doctor 🩺."
+    elif any(word in lower_input for word in ["lazy", "focus", "can't study"]):
+        response += "Set a 15-minute timer and start with a small task ⏱️. You can do it!"
     else:
-        response = "You can try dancing, singing, painting, exercising, or taking deep breaths today 🌻. Let me know how else I can help!"
-    st.success(f"Doraemon says: {response}")
+        response += "You can try dancing, singing, painting, stretching, or journaling 🌻 to brighten your day."
 
-# To-Do List
+    st.success(response)
+
+# To-Do List with checkmarks
 st.markdown("## 📋 To-Do List")
-tasks = st.session_state.get('tasks', [])
-new_task = st.text_input("Add a new task to your list")
-if new_task:
-    tasks.append(new_task)
-    st.session_state['tasks'] = tasks
+if 'tasks' not in st.session_state:
+    st.session_state['tasks'] = []
 
-completed = []
-for idx, task in enumerate(tasks):
-    if st.checkbox(task, key=idx):
-        completed.append(task)
-for task in completed:
-    tasks.remove(task)
-st.session_state['tasks'] = tasks
+new_task = st.text_input("Add a task:")
+if st.button("Add Task") and new_task:
+    st.session_state['tasks'].append(new_task)
+
+for i, task in enumerate(st.session_state['tasks']):
+    if st.checkbox(task, key=f"task_{i}"):
+        st.session_state['tasks'].pop(i)
+        st.experimental_rerun()
 
 # Daily Quote
 st.markdown("## ✨ Daily Quote")
-quotes = ["Believe in yourself.", "Consistency creates results.", "Small steps build big dreams.", "Stay kind.", "You can do wonderful things."]
+quotes = [
+    "Believe in yourself.",
+    "Consistency creates results.",
+    "Small steps build big dreams.",
+    "Stay kind.",
+    "You can do wonderful things."
+]
 st.info(random.choice(quotes))
 
 # Health Tip
 st.markdown("## 🍎 Health Tip")
-health_tips = ["Stay hydrated.", "Take breathing breaks.", "Eat fruits.", "Stretch shoulders.", "Walk for 10 min."]
+health_tips = [
+    "Stay hydrated.",
+    "Take breathing breaks.",
+    "Eat fruits.",
+    "Stretch shoulders.",
+    "Walk for 10 min."
+]
 st.info(random.choice(health_tips))
 
 # Streak Tracker
 st.markdown("## 🔥 Streak Tracker")
 if 'streak' not in st.session_state:
     st.session_state['streak'] = 0
+
 if st.button("✅ I completed today's tasks!"):
     st.session_state['streak'] += 1
     st.balloons()
     st.success(f"Great job! Streak: {st.session_state['streak']} days.")
 else:
     st.info(f"Current streak: {st.session_state['streak']} days. Keep going!")
+
+
 
