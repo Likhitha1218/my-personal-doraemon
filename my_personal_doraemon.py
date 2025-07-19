@@ -1,166 +1,163 @@
 import streamlit as st
 import datetime
-import json
-import os
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-import pickle
+import random
 
-# -------------------- Google Calendar Setup --------------------
-SCOPES = ['https://www.googleapis.com/auth/calendar.events']
-calendar_id = 'primary'
+st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
-def authenticate_gcal():
-    creds = None
-    if os.path.exists('token.pkl'):
-        with open('token.pkl', 'rb') as token:
-            creds = pickle.load(token)
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open('token.pkl', 'wb') as token:
-            pickle.dump(creds, token)
-    return creds
-
-def add_event_to_gcal(task):
-    creds = authenticate_gcal()
-    service = build('calendar', 'v3', credentials=creds)
-    today_date = datetime.date.today()
-
-    if "study" in task.lower() or "revise" in task.lower():
-        color_id = "9"  # Blue
-    elif "walk" in task.lower() or "stretch" in task.lower() or "health" in task.lower():
-        color_id = "10"  # Green
-    else:
-        color_id = "5"   # Yellow
-
-    event = {
-        'summary': task,
-        'start': {'dateTime': f"{today_date}T09:00:00", 'timeZone': 'Asia/Kolkata'},
-        'end': {'dateTime': f"{today_date}T10:00:00", 'timeZone': 'Asia/Kolkata'},
-        'colorId': color_id,
-        'reminders': {
-            'useDefault': False,
-            'overrides': [{'method': 'popup', 'minutes': 10}]
-        },
-    }
-    service.events().insert(calendarId=calendar_id, body=event).execute()
-
-# -------------------- Streak Tracking --------------------
-streak_file = 'doraemon_streak.json'
-
-def load_streak():
-    if os.path.exists(streak_file):
-        with open(streak_file, 'r') as f:
-            return json.load(f)
-    else:
-        return {"last_date": "", "streak": 0}
-
-def save_streak(data):
-    with open(streak_file, 'w') as f:
-        json.dump(data, f, indent=4)
-
-today_date = datetime.date.today()
-streak_data = load_streak()
-
-if streak_data["last_date"] != str(today_date):
-    last_date_obj = datetime.datetime.strptime(streak_data["last_date"], "%Y-%m-%d").date() if streak_data["last_date"] else None
-    if last_date_obj and (today_date - last_date_obj).days == 1:
-        streak_data["streak"] += 1
-    else:
-        streak_data["streak"] = 1
-    streak_data["last_date"] = str(today_date)
-    save_streak(streak_data)
-
-# -------------------- Aesthetic --------------------
-st.set_page_config(page_title="My Personal Doraemon", layout="centered")
-
-st.markdown("""
+animated_bg = """
 <style>
-body { background-color: #fceff9; font-family: 'Comic Sans MS', cursive; }
-h1, h2, h3 { color: #ff6f91; }
-.stButton>button {
-    background-color: #ff6f91; color: white; border-radius: 15px;
-    padding: 0.5em 1em; font-size: 1em; font-weight: bold;
+body {
+    background: linear-gradient(270deg, #fbeffb, #f0faff, #fefbf1);
+    background-size: 600% 600%;
+    animation: gradientBG 30s ease infinite;
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
-.stButton>button:hover { background-color: #ff8ba7; }
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
 </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(animated_bg, unsafe_allow_html=True)
 
-# -------------------- Header --------------------
-st.markdown(f"<h1>💙 My Personal Doraemon</h1>", unsafe_allow_html=True)
-st.markdown(f"<h3>🔥 Current Streak: {streak_data['streak']} days</h3>", unsafe_allow_html=True)
+cartoon_urls = [
+    "https://i.imgur.com/lr7xARU.png",
+    "https://i.imgur.com/fnKqQ0p.png",
+    "https://i.imgur.com/1YcKcVW.png",
+    "https://i.imgur.com/EK1zMLP.png",
+    "https://i.imgur.com/CODQMMQ.png",
+    "https://i.imgur.com/qXANHfT.png",
+    "https://i.imgur.com/OPOxDsA.png",
+    "https://i.imgur.com/ZqPVn2Q.png",
+    "https://i.imgur.com/mQOSyDD.png",
+    "https://i.imgur.com/F5OZn5u.png"
+]
+today_index = datetime.datetime.now().timetuple().tm_yday % len(cartoon_urls)
+today_cartoon = cartoon_urls[today_index]
 
-# -------------------- To-Do List --------------------
-st.markdown("---")
-st.markdown("<h2>📝 Today's To-Do List</h2>", unsafe_allow_html=True)
+doraemon_logo = "https://i.imgur.com/1YcKcVW.png"
+col1, col2 = st.columns([1, 8])
+with col1:
+    st.image(doraemon_logo, width=70)
+with col2:
+    st.markdown("<h1 style='font-family:Comic Sans MS;color:#2b2b2b;'>My Personal Doraemon</h1>", unsafe_allow_html=True)
 
-todo_file = "doraemon_todo.json"
+today = datetime.datetime.now()
+date_str = today.strftime("%d %B %Y")
+day_str = today.strftime("%A")
+nobita_img = "https://i.imgur.com/W8yWxJd.png"
+shizuka_img = "https://i.imgur.com/n4v4DdF.png"
+col3, col4, col5, col6 = st.columns([1, 3, 1, 3])
+with col3:
+    st.image(nobita_img, width=40)
+with col4:
+    st.markdown(f"### {date_str}")
+with col5:
+    st.image(shizuka_img, width=40)
+with col6:
+    st.markdown(f"### {day_str}")
 
-def load_todos():
-    if os.path.exists(todo_file):
-        with open(todo_file, "r") as f:
-            return json.load(f)
+st.image(today_cartoon, caption="Today's Cartoon", use_column_width=True)
+
+st.markdown("## 💬 Prompt Box")
+mood = st.text_input("How are you feeling today? Type 'exercise', 'dance', 'sing', or 'paint' for suggestions:")
+if mood:
+    mood_lower = mood.lower()
+    if "exercise" in mood_lower or "workout" in mood_lower or "fitness" in mood_lower:
+        exercise_suggestions = [
+            "Try 10 jumping jacks!",
+            "Do a quick 1-minute wall sit.",
+            "Do 5 push-ups to energize.",
+            "Stretch for 2 minutes.",
+            "Do 1-minute deep breathing in a yoga pose."
+        ]
+        suggestion = random.choice(exercise_suggestions)
+    elif "dance" in mood_lower:
+        dance_suggestions = [
+            "Dance to your favorite song for 3 minutes!",
+            "Try a freestyle dance break.",
+            "Play a song and groove lightly while studying.",
+            "Do a silly dance to boost your mood.",
+            "Record yourself dancing for fun!"
+        ]
+        suggestion = random.choice(dance_suggestions)
+    elif "sing" in mood_lower:
+        sing_suggestions = [
+            "Sing your favorite song for 2 minutes.",
+            "Try humming to relax your mind.",
+            "Sing loudly to release stress.",
+            "Record yourself singing for fun!",
+            "Sing along with your playlist."
+        ]
+        suggestion = random.choice(sing_suggestions)
+    elif "paint" in mood_lower or "draw" in mood_lower or "doodle" in mood_lower:
+        art_suggestions = [
+            "Draw a small doodle on a sticky note.",
+            "Try watercolor painting for 5 minutes.",
+            "Doodle clouds or stars in your notebook.",
+            "Draw your mood as a cartoon.",
+            "Color a small mandala page."
+        ]
+        suggestion = random.choice(art_suggestions)
     else:
-        return {}
+        general_suggestions = [
+            "Take a 5-minute dance break!",
+            "Sing your favorite song softly.",
+            "Draw a small doodle to refresh your mind.",
+            "Take a short mindful walk.",
+            "Do a 2-minute breathing exercise.",
+            "Write down 3 things you are grateful for.",
+            "Stretch for 5 minutes.",
+            "Tidy your desk quickly."
+        ]
+        suggestion = random.choice(general_suggestions)
+    st.success(f"✨ Suggestion: {suggestion}")
 
-def save_todos(todos):
-    with open(todo_file, "w") as f:
-        json.dump(todos, f, indent=4)
+st.markdown("## 📋 To-Do List")
+tasks = st.experimental_get_query_params().get("tasks", [])
+new_task = st.text_input("Add a new task")
+if new_task:
+    tasks.append(new_task)
+    st.experimental_set_query_params(tasks=tasks)
+completed_tasks = []
+for i, task in enumerate(tasks):
+    if st.checkbox(task, key=i):
+        completed_tasks.append(task)
+tasks = [task for task in tasks if task not in completed_tasks]
+st.experimental_set_query_params(tasks=tasks)
 
-todos = load_todos()
-today_str = str(today_date)
-if today_str not in todos:
-    todos[today_str] = [
-        {"task": "📖 Study 2 hours (Core Subject/IAS GS)", "done": False},
-        {"task": "🧘‍♀️ 10-min morning stretching", "done": False},
-        {"task": "🚶‍♀️ 15-min evening walk", "done": False},
-        {"task": "📚 Revise yesterday's notes", "done": False},
-        {"task": "🧑‍🍳 Help family with one chore", "done": False},
-    ]
-
-for idx, item in enumerate(todos[today_str]):
-    checked = st.checkbox(item["task"], value=item["done"], key=f"todo_{idx}")
-    if checked and not item["done"]:
-        add_event_to_gcal(item["task"])
-    todos[today_str][idx]["done"] = checked
-
-new_task = st.text_input("Add a new task:")
-if st.button("➕ Add Task"):
-    if new_task.strip() != "":
-        todos[today_str].append({"task": new_task, "done": False})
-        save_todos(todos)
-        add_event_to_gcal(new_task)
-        st.experimental_rerun()
-
-save_todos(todos)
-
-# -------------------- Quote --------------------
-st.markdown("---")
-st.markdown("<h2>💡 Doraemon's Quote of the Day</h2>", unsafe_allow_html=True)
+st.markdown("## ✨ Daily Quote")
 quotes = [
-    "Believe in yourself, even if no one else does.",
-    "Consistency beats motivation every time.",
-    "Take small steps, and they will lead to big changes.",
-    "Rest if you must, but don’t quit.",
-    "Your hard work will pay off, keep going!"
+    "Believe in yourself and all that you are.",
+    "Consistency creates results.",
+    "Take small steps daily to build big dreams.",
+    "Stay kind to yourself and others.",
+    "You are capable of wonderful things."
 ]
-quote_today = quotes[today_date.timetuple().tm_yday % len(quotes)]
-st.success(f"✨ {quote_today}")
+st.info(random.choice(quotes))
 
-# -------------------- Health Tip --------------------
-st.markdown("---")
-st.markdown("<h2>🍎 Doraemon's Health Tip of the Day</h2>", unsafe_allow_html=True)
+st.markdown("## 🍎 Health Tip")
 health_tips = [
-    "Drink 2-3 litres of water today.",
-    "Take deep belly breaths to reduce stress.",
-    "Eat at least one fruit today.",
-    "Avoid screens 30 mins before bed for better sleep.",
-    "Do some light stretches if you feel stiff while studying."
+    "Stay hydrated today.",
+    "Take mindful breathing breaks.",
+    "Eat a healthy fruit or snack.",
+    "Stretch your back and shoulders.",
+    "Take a 10-minute walk if possible."
 ]
-health_tip_today = health_tips[today_date.timetuple().tm_yday % len(health_tips)]
-st.info(f"💡 {health_tip_today}")
+st.info(random.choice(health_tips))
+
+st.markdown("## 🔥 Streak Tracker")
+try:
+    with open("streak.txt", "r") as f:
+        streak = int(f.read())
+except:
+    streak = 0
+if st.button("✅ I completed today's tasks!"):
+    streak += 1
+    with open("streak.txt", "w") as f:
+        f.write(str(streak))
+    st.balloons()
+    st.success(f"Great job! Your current streak is {streak} days.")
+else:
+    st.info(f"Your current streak is {streak} days. Keep it up!")
