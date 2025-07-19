@@ -138,7 +138,7 @@ if st.button("Get Doraemon's Advice"):
 
 # Display conversation history
 for user_text, bot_reply in reversed(st.session_state['chat_history']):
-    st.info(f"{user_text}
-{bot_reply}")
+    st.info(f"{user_text}\n{bot_reply}")
+")
 
 st.markdown("</div>", unsafe_allow_html=True)
