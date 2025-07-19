@@ -1,5 +1,3 @@
-# Doraemon Aesthetic Productivity App with Stable Images for Streamlit Cloud
-
 import streamlit as st
 import datetime
 import random
@@ -7,7 +5,7 @@ import random
 st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
 # Animated pastel background
-animated_bg = """
+st.markdown("""
 <style>
 body {
     background: linear-gradient(270deg, #fbeffb, #f0faff, #fefbf1);
@@ -21,8 +19,7 @@ body {
     100% {background-position: 0% 50%;}
 }
 </style>
-"""
-st.markdown(animated_bg, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # Stable cartoon images
 DORAEMON_URL = "https://raw.githubusercontent.com/yourusername/cartoon-assets/main/doraemon.png"
@@ -39,7 +36,7 @@ CARTOON_URLS = [
 # Header with Doraemon
 col1, col2 = st.columns([1, 8])
 with col1:
-    st.image(DORAEMON_URL, width=70)
+    st.image(DORAEMON_URL, width=70, use_container_width=True)
 with col2:
     st.markdown("<h1 style='font-family:Comic Sans MS;color:#2b2b2b;'>My Personal Doraemon</h1>", unsafe_allow_html=True)
 
@@ -49,48 +46,58 @@ date_str = today.strftime("%d %B %Y")
 day_str = today.strftime("%A")
 col3, col4, col5, col6 = st.columns([1, 3, 1, 3])
 with col3:
-    st.image(NOBITA_URL, width=50)
+    st.image(NOBITA_URL, width=50, use_container_width=True)
 with col4:
     st.markdown(f"### {date_str}")
 with col5:
-    st.image(SHIZUKA_URL, width=50)
+    st.image(SHIZUKA_URL, width=50, use_container_width=True)
 with col6:
     st.markdown(f"### {day_str}")
 
 # Daily cartoon doodle
 today_index = today.timetuple().tm_yday % len(CARTOON_URLS)
-st.image(CARTOON_URLS[today_index], caption="Today's Cartoon Doodle", use_column_width=True)
+st.image(CARTOON_URLS[today_index], caption="Today's Cartoon Doodle", use_container_width=True)
 
-# Prompt Box
-st.markdown("## 💬 Prompt Box")
-mood = st.text_input("How are you feeling today? Type 'exercise', 'dance', 'sing', 'paint' for suggestions:")
-if mood:
-    mood_lower = mood.lower()
-    if "exercise" in mood_lower or "workout" in mood_lower or "fitness" in mood_lower:
-        suggestions = ["Try 10 jumping jacks.", "Do a 1-minute wall sit.", "5 push-ups for energy.", "Stretch for 2 minutes.", "Deep breathing in a yoga pose."]
-    elif "dance" in mood_lower:
-        suggestions = ["Dance to your favorite song.", "Freestyle dance for 3 minutes.", "Groove lightly while studying.", "Silly dance to boost mood."]
-    elif "sing" in mood_lower:
-        suggestions = ["Sing your favorite song.", "Hum softly for relaxation.", "Sing to release stress.", "Record yourself singing."]
-    elif "paint" in mood_lower or "draw" in mood_lower or "doodle" in mood_lower:
-        suggestions = ["Doodle on a sticky note.", "Watercolor for 5 minutes.", "Draw stars or clouds.", "Sketch your mood as a cartoon."]
+# Advanced Prompt Box for all human needs
+st.markdown("## 💬 Doraemon Prompt Box")
+user_input = st.text_input("Tell Doraemon how you feel or what you need today:")
+
+if user_input:
+    response = ""
+    lower_input = user_input.lower()
+    if "sad" in lower_input or "depressed" in lower_input:
+        response = "I'm here for you 🤗. Try listening to your favorite song or doodling something simple. Want to dance a bit?"
+    elif "tired" in lower_input or "exhausted" in lower_input:
+        response = "You might need some rest 🛌. Stretch for 2 minutes, drink water, and take a small break."
+    elif "happy" in lower_input:
+        response = "Yay! 😃 Celebrate by dancing, singing, or sketching a happy doodle today!"
+    elif "bored" in lower_input:
+        response = "Try a fun activity: dance, draw Doraemon, or organize your study desk with music on 🎶."
+    elif "anxious" in lower_input or "nervous" in lower_input:
+        response = "Take deep breaths 🧘‍♀️. Stretch your shoulders and journal your thoughts for clarity."
+    elif "stomach" in lower_input or "headache" in lower_input or "pain" in lower_input:
+        response = "Try drinking warm water and resting. If pain persists, please consult a doctor 🩺."
+    elif "focus" in lower_input or "lazy" in lower_input:
+        response = "Set a 15-min timer and start with a small task ⏱️. Reward yourself with a doodle or dance after!"
     else:
-        suggestions = ["Dance for 5 min!", "Sing softly.", "Draw a doodle.", "Take a mindful walk.", "2-min breathing exercise.", "Write 3 gratitudes.", "Stretch for 5 min.", "Tidy your desk."]
-    st.success(f"✨ Suggestion: {random.choice(suggestions)}")
+        response = "You can try dancing, singing, painting, exercising, or taking deep breaths today 🌻. Let me know how else I can help!"
+    st.success(f"Doraemon says: {response}")
 
 # To-Do List
 st.markdown("## 📋 To-Do List")
-tasks = st.experimental_get_query_params().get("tasks", [])
-new_task = st.text_input("Add a new task")
+tasks = st.session_state.get('tasks', [])
+new_task = st.text_input("Add a new task to your list")
 if new_task:
     tasks.append(new_task)
-    st.experimental_set_query_params(tasks=tasks)
-completed_tasks = []
-for i, task in enumerate(tasks):
-    if st.checkbox(task, key=i):
-        completed_tasks.append(task)
-tasks = [task for task in tasks if task not in completed_tasks]
-st.experimental_set_query_params(tasks=tasks)
+    st.session_state['tasks'] = tasks
+
+completed = []
+for idx, task in enumerate(tasks):
+    if st.checkbox(task, key=idx):
+        completed.append(task)
+for task in completed:
+    tasks.remove(task)
+st.session_state['tasks'] = tasks
 
 # Daily Quote
 st.markdown("## ✨ Daily Quote")
@@ -104,16 +111,12 @@ st.info(random.choice(health_tips))
 
 # Streak Tracker
 st.markdown("## 🔥 Streak Tracker")
-try:
-    with open("streak.txt", "r") as f:
-        streak = int(f.read())
-except:
-    streak = 0
+if 'streak' not in st.session_state:
+    st.session_state['streak'] = 0
 if st.button("✅ I completed today's tasks!"):
-    streak += 1
-    with open("streak.txt", "w") as f:
-        f.write(str(streak))
+    st.session_state['streak'] += 1
     st.balloons()
-    st.success(f"Great job! Streak: {streak} days.")
+    st.success(f"Great job! Streak: {st.session_state['streak']} days.")
 else:
-    st.info(f"Current streak: {streak} days. Keep going!")
+    st.info(f"Current streak: {st.session_state['streak']} days. Keep going!")
+
