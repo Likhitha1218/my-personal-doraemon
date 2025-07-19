@@ -83,15 +83,17 @@ new_task = st.text_input("Add a new task:")
 if st.button("Add Task") and new_task.strip() != "":
     st.session_state['tasks'].append(new_task.strip())
 
-completed_task_index = None
+completed_tasks = []
+
 for i, task in enumerate(st.session_state['tasks']):
     if st.checkbox(task, key=f"task_{i}"):
-        completed_task_index = i
+        completed_tasks.append(i)
 
-if completed_task_index is not None:
-    st.session_state['tasks'].pop(completed_task_index)
-    st.experimental_rerun()
-
+# Remove completed tasks after loop
+if completed_tasks:
+    for index in sorted(completed_tasks, reverse=True):
+        st.session_state['tasks'].pop(index)
+    st.rerun()
 
 st.markdown("</div>", unsafe_allow_html=True)
 
