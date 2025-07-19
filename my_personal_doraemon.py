@@ -1,4 +1,3 @@
-
 import streamlit as st
 import datetime
 import random
@@ -6,28 +5,32 @@ import random
 # Page Configuration
 st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
-# Custom CSS for pastel background, cartoonish fonts, and button styling
+# Pastel background, Fredoka One font, clear text color
 st.markdown('''
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
     .stApp {
         background-color: #FFF7F0;
-        color: #333;
-        font-family: 'Comic Neue', cursive;
+        color: #222;
+        font-family: 'Fredoka One', cursive;
+    }
+    h1, h2, h3, h4, h5, h6, p, div, span, input, button {
+        color: #222 !important;
+        font-family: 'Fredoka One', cursive;
     }
     .block {
-        background-color: #FFFFFFCC;
+        background-color: #FFFFFFDD;
         padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         margin-bottom: 20px;
     }
     .stTextInput>div>div>input {
-        background-color: #FFF0F5;
+        background-color: #FFEFEF;
         color: #222;
     }
     .stButton>button {
-        background-color: #AEDFF7;
+        background-color: #FFD6E8;
         color: #222;
         font-weight: bold;
         border-radius: 8px;
@@ -37,21 +40,21 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 # App Title
-st.markdown("<h1 style='text-align: center;'>My Personal Doraemon</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>My Personal Doraemon 🩵</h1>", unsafe_allow_html=True)
 
-# Display Current Date and Day
+# Date and Day
 today = datetime.datetime.now()
 date_str = today.strftime("%d %B %Y")
 day_str = today.strftime("%A")
 st.markdown(f"<h3 style='text-align:center;'>{date_str} | {day_str}</h3>", unsafe_allow_html=True)
 
-# Display Dynamic Pastel Doodle Image
+# Stable aesthetic doodle image
 st.markdown("<div class='block'>", unsafe_allow_html=True)
-doodle_url = f"https://source.unsplash.com/800x400/?pastel,doodle&sig={today.timetuple().tm_yday}"
+doodle_url = "https://raw.githubusercontent.com/abhishekkrthakur/ImagesForProjects/main/pastel_doodle.png"
 st.image(doodle_url, caption="✨ Today's Pastel Doodle", use_container_width=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Streak Tracking
+# Streak Tracker
 if 'streak' not in st.session_state:
     st.session_state['streak'] = 0
 if 'last_checked' not in st.session_state:
@@ -71,11 +74,11 @@ st.markdown("## ✅ To-Do List")
 
 if 'tasks' not in st.session_state:
     st.session_state['tasks'] = [
-        "Read for 30 minutes 📚",
-        "Take a 10-minute walk 🚶‍♀️",
-        "Revise one AI/ML topic 🤖",
-        "Drink water 💧",
-        "Journal for 5 minutes 📝"
+        "🌸 Read for 30 minutes",
+        "🚶‍♀️ Take a 10-minute walk",
+        "🤖 Revise one AI/ML topic",
+        "💧 Drink water",
+        "📝 Journal for 5 minutes"
     ]
 
 new_task = st.text_input("Add a new task:")
@@ -88,66 +91,66 @@ for i, task in enumerate(st.session_state['tasks']):
         st.experimental_rerun()
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Daily Quote Section
+# Daily Quote
 st.markdown("<div class='block'>", unsafe_allow_html=True)
 st.markdown("## ✨ Daily Quote")
 quotes = [
-    "You are capable of amazing things!",
-    "Take a deep breath, you are doing well.",
-    "Stay consistent, and you will see progress.",
-    "Smile, it suits you!",
-    "Today is a new opportunity to grow."
+    "🌼 You are capable of amazing things!",
+    "💫 Take a deep breath, you are doing well.",
+    "🌻 Stay consistent, and you will see progress.",
+    "😊 Smile, it suits you!",
+    "🌈 Today is a new opportunity to grow."
 ]
 st.success(random.choice(quotes))
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Health Tip Section
+# Health Tip
 st.markdown("<div class='block'>", unsafe_allow_html=True)
 st.markdown("## 🍎 Health Tip")
 health_tips = [
-    "Drink a glass of water now 💧",
-    "Stretch your body for 5 minutes 🧘‍♀️",
-    "Eat a fruit today 🍎",
-    "Take deep breaths for a minute 🌬️",
-    "Go for a short walk 🚶‍♀️"
+    "💧 Drink a glass of water now",
+    "🧘‍♀️ Stretch your body for 5 minutes",
+    "🍎 Eat a fruit today",
+    "🌬️ Take deep breaths for a minute",
+    "🚶‍♀️ Go for a short walk"
 ]
 st.success(random.choice(health_tips))
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Prompt Box for ChatGPT-like suggestions
+# Prompt Box
 st.markdown("<div class='block'>", unsafe_allow_html=True)
-st.markdown("## 💬 Doraemon Chat")
+st.markdown("## 💬 Ask Doraemon")
 
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-user_input = st.text_input("How are you feeling or what do you need today?")
+user_input = st.text_input("Tell Doraemon how you feel or what you need today 💖")
 
 if st.button("Ask Doraemon"):
-    lower_input = user_input.lower()
+    user_text = user_input.lower()
     response = "✨ Doraemon says: "
 
-    if "sad" in lower_input or "depress" in lower_input:
-        response += "It's okay to feel this way. Try painting, doodling, or going for a short walk."
-    elif "happy" in lower_input:
-        response += "That's great! Celebrate with dance, music, or a creative hobby."
-    elif "bored" in lower_input:
-        response += "How about sketching, singing, or exploring a new hobby today?"
-    elif "tired" in lower_input:
-        response += "Take a 15-minute nap or relax with deep breaths."
-    elif "focus" in lower_input or "study" in lower_input:
-        response += "Try the Pomodoro method: 25 min focus, 5 min break."
-    elif "pain" in lower_input or "headache" in lower_input:
-        response += "Drink water, take deep breaths, and rest. If it persists, see a doctor."
-    elif "exercise" in lower_input or "workout" in lower_input:
-        response += "Try a 10-minute dance or a light stretch session!"
+    if "sad" in user_text or "depress" in user_text:
+        response += "It's okay to feel this way 🌸. Try painting, doodling, or going for a walk."
+    elif "happy" in user_text:
+        response += "That's wonderful! Celebrate with dance, music, or art 🌈."
+    elif "bored" in user_text:
+        response += "How about singing, painting, or trying a new hobby today 🎨?"
+    elif "tired" in user_text:
+        response += "Take a short nap or stretch gently 🧘‍♀️."
+    elif "focus" in user_text or "study" in user_text:
+        response += "Use Pomodoro: 25 min focus, 5 min break 📚."
+    elif "pain" in user_text or "headache" in user_text:
+        response += "Drink water, rest, and take deep breaths 💧."
+    elif "exercise" in user_text or "workout" in user_text:
+        response += "Try gentle stretches or a short dance session 💃."
     else:
-        response += "Dance, paint, read, or take a walk to refresh yourself today!"
+        response += "You can dance, paint, journal, or take a walk to refresh today! 💫"
 
-    st.session_state.chat_history.append(("👧 You: " + user_input, response))
+    st.session_state['chat_history'].append((f"👧 You: {user_input}", response))
 
-for user_text, bot_reply in reversed(st.session_state['chat_history']):
-    st.info(f"{user_text}\n{bot_reply}")
+for user, reply in reversed(st.session_state['chat_history']):
+    st.info(f"{user}\n{reply}")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
