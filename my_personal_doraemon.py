@@ -1,15 +1,12 @@
 import streamlit as st
 import datetime
 import random
-import base64
+
 
 # Page Configuration
 st.set_page_config(page_title="My Personal Doraemon", page_icon="🐱", layout="centered")
 
-with open("/mnt/data/799efeed-09ea-468e-b42e-9f1bf1784a66.png", "rb") as img_file:
-    b64 = base64.b64encode(img_file.read()).decode()
 
-img_uri = f"data:image/png;base64,{b64}"
 
 # Pastel background, Fredoka One font, clear text color
 st.markdown(f'''
@@ -17,7 +14,7 @@ st.markdown(f'''
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
     .stApp {{
-        background-image: url("{img_uri}");
+        background-image: url("https://www.vecteezy.com/vector-art/14241092-seamless-pattern-rabbit-hand-drawn-bunny-and-heart-design-rabbit-background-vector");
         background-repeat: repeat;
         background-size: auto;
         background-attachment: fixed;
