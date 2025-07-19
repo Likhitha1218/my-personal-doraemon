@@ -14,7 +14,7 @@ st.markdown(f'''
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
     .stApp {{
-        background-image: url("https://static.vecteezy.com/system/resources/previews/003494732/hand-drawn-cute-bunny-hearts-seamless-pattern.jpg");
+        background-image: url("https://www.rawpixel.com/image/19266965/soft-pink-hearts-pattern");
         background-repeat: repeat;
         background-size: auto;
         background-attachment: fixed;
